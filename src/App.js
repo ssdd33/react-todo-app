@@ -1,14 +1,9 @@
-import React, { useReducer, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback, useState } from 'react';
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
-const createBulkTodos = () => {
-  const array = [];
-  for (let i = 1; i <= 2500; i++) {
-    array.push({ id: i, text: `할일 ${i}`, checked: false });
-  }
-  return array;
-};
+import TodoFilter from './components/TodoFilter';
+
 const todoReducer = (todos, action) => {
   switch (action.type) {
     case 'INSERT':
@@ -19,16 +14,32 @@ const todoReducer = (todos, action) => {
       return todos.map((todo) =>
         todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
       );
+    case 'CLEAR':
+      return [];
+    case 'COMPLETEDCLEAR':
+      return todos.filter((todo) => !todo.checked);
     default:
       return todos;
   }
 };
 const App = () => {
-  const [todos, dispatch] = useReducer(todoReducer, undefined, createBulkTodos);
-  const id = useRef(2501);
+  const [todos, dispatch] = useReducer(todoReducer, []);
+  const [selector, setSelector] = useState('ALL');
+  const id = useRef(1);
+
+  const filterTodos = useCallback(() => {
+    switch (selector) {
+      case 'ACTIVE':
+        return todos.filter((todo) => !todo.checked);
+      case 'COMPLETED':
+        return todos.filter((todo) => todo.checked);
+
+      default:
+        return todos;
+    }
+  }, [selector, todos]);
   const onInsert = useCallback((text) => {
     const todo = { id: id.current, text, checked: false };
-
     dispatch({ type: 'INSERT', todo });
     id.current += 1;
   }, []);
@@ -39,10 +50,27 @@ const App = () => {
   const onToggle = useCallback((id) => {
     dispatch({ type: 'TOGGLE', id });
   }, []);
+
+  const onClear = useCallback(() => {
+    dispatch({ type: 'CLEAR' });
+  }, []);
+  const onCompletedClear = useCallback(() => {
+    dispatch({ type: 'COMPLETEDCLEAR' });
+  }, []);
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+      <TodoList
+        filterTodos={filterTodos}
+        onRemove={onRemove}
+        onToggle={onToggle}
+      />
+      <TodoFilter
+        todos={todos}
+        onClear={onClear}
+        onCompletedClear={onCompletedClear}
+        setSelector={setSelector}
+      />
     </TodoTemplate>
   );
 };
