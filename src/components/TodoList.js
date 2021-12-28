@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { List } from 'react-virtualized';
 import TodoListItem from './TodoListItem';
 import './TodoList.scss';
-function TodoList({ todos, onRemove, onToggle }) {
+function TodoList({ filterTodos, onRemove, onToggle }) {
+  const todos = filterTodos();
   const rowRenderer = useCallback(
     ({ index, key, style }) => {
       const todo = todos[index];
