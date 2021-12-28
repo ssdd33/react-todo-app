@@ -11,6 +11,7 @@ export default function TodoInsert({ onInsert }) {
       e.preventDefault();
       onInsert(value);
       setValue('');
+      console.log('onSubmit');
     },
     [onInsert, value],
   );

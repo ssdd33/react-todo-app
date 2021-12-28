@@ -7,16 +7,28 @@ import {
 import cn from 'classnames';
 import './TodoListItem.scss';
 
-export default function TodoListItem({ item: { text, checked } }) {
+const TodoListItem = ({ todo: { id, text, checked }, onRemove, onToggle }) => {
   return (
     <div className="TodoListItem">
-      <div className={cn('checkbox', { checked })}>
+      <div
+        className={cn('checkbox', { checked })}
+        onClick={() => {
+          onToggle(id);
+        }}
+      >
         {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
         <div className="text">{text}</div>
-        <div className="remove">
-          <MdRemoveCircleOutline />
-        </div>
+      </div>
+      <div
+        className="remove"
+        onClick={() => {
+          onRemove(id);
+        }}
+      >
+        <MdRemoveCircleOutline />
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(TodoListItem);
