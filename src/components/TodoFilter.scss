@@ -1,6 +1,37 @@
 .todoFilter {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   padding: 10px;
+  background: #868e96;
+  color: white;
+  button {
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+    height: 25px;
+    background: #adb5db;
+    color: white;
+    margin: 0 1px;
+    &:hover {
+      color: #868e96;
+    }
+  }
+}
+
+.todoFilter > div {
+  flex: 110;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftCount {
+  justify-content: start !important;
+}
+
+.selector_btn_wrapper {
+  justify-content: space-between;
+}
+
+.clear_btn_wrapper {
+  justify-content: end;
 }
