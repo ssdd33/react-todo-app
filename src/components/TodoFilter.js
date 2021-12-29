@@ -1,10 +1,14 @@
 import React from 'react';
 import './TodoFilter.scss';
 const TodoFilter = ({ todos, setSelector, onClear, onCompletedClear }) => {
-  const left = todos.filter((todo) => !todo.checked);
+  const left = todos.filter((todo) => !todo.checked).length;
+  const completed = todos.filter((todo) => todo.checked).length;
   return (
     <div className="todoFilter">
-      <div className="leftCount">{left.length} left</div>
+      <div className="leftCount">
+        {left}
+        {left <= 1 ? ' item' : ' items'} left
+      </div>
       <div className="selector_btn_wrapper">
         <button className="all_btn" onClick={() => setSelector('ALL')}>
           All
@@ -20,11 +24,13 @@ const TodoFilter = ({ todos, setSelector, onClear, onCompletedClear }) => {
         </button>
       </div>
       <div className="clear_btn_wrapper">
-        <button className="clear" onClick={onClear}>
+        {!!completed && (
+          <button className="clearCompleted" onClick={onCompletedClear}>
+            Clear Completed
+          </button>
+        )}
+        <button className="Clear" onClick={onClear}>
           Clear
-        </button>
-        <button className="clearCompleted" onClick={onCompletedClear}>
-          Clear Completed
         </button>
       </div>
     </div>

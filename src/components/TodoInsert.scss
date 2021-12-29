@@ -1,4 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.allCheckBtn {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  background: #868e96;
+  color: white;
+  &:hover {
+    background: #adb5db;
+  }
+  &.allCheck {
+    color: #22b8cf;
+  }
+}
+
 .TodoInsert {
+  width: 100%;
   display: flex;
   background: #495057;
   input {
